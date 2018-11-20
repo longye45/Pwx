@@ -1,6 +1,7 @@
 package org.dhy;
 
 import org.apache.poi.xwpf.usermodel.*;
+import org.dhy.Common.CommonProperties;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,26 +14,32 @@ import java.util.List;
  **/
 public class Test {
     public static void main(String[] args) throws Exception {
-        XWPFDocument doc = new XWPFDocument(new FileInputStream("/Users/dhy/test.docx"));
-        List<XWPFParagraph> paragraphs = doc.getParagraphs();
-        for (int i = 0; i < paragraphs.size(); i++) {
-            XWPFParagraph xwpfParagraph = paragraphs.get(i);
-            System.out.println(xwpfParagraph.getAlignment());
-            System.out.println(xwpfParagraph.getFirstLineIndent());
-            List<XWPFRun> runs = xwpfParagraph.getRuns();
-            for (int j = 0; j < runs.size(); j++) {
-                XWPFRun xwpfRun = runs.get(j);
-                System.out.println(xwpfRun.getFontFamily());
-                System.out.println(xwpfRun.getFontSize());
-                System.out.println(xwpfRun.getFontName());
-                System.out.println(xwpfRun.getFontName());
-            }
-        }
-
-        test();
+        anserVersion();
     }
 
-    public static final void test() throws Exception{
+    public static void anserVersion() throws Exception{
+        XWPFDocument doc = new XWPFDocument(new FileInputStream("C:\\Users\\longy\\Desktop\\MMC福建-同安-中医岗-马瑞鸿.docx"));
+
+        XWPFDocument newDoc = new XWPFDocument();
+        newDoc.
+        List<XWPFParagraph> paragraphs = doc.getParagraphs();
+        int n = 0;
+        for (int i = 0; i < paragraphs.size(); i++) {
+            XWPFParagraph xwpfParagraph = paragraphs.get(i);
+            if (xwpfParagraph.getText().matches("[A-Z].*") ||
+                    xwpfParagraph.getText().matches("【[0-9A-Z]+】.*")) {
+                continue;
+            }
+            newDoc.createParagraph();
+            newDoc.setParagraph(xwpfParagraph, n++);
+        }
+        FileOutputStream out = new FileOutputStream(System.getProperty("user.dir") + "sample.docx");
+        newDoc.write(out);
+        out.close();
+    }
+
+
+    public static final void test() throws Exception {
         XWPFDocument doc = new XWPFDocument();
         XWPFParagraph p = doc.createParagraph();
         p.setAlignment(ParagraphAlignment.CENTER);
