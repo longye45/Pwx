@@ -21,13 +21,11 @@ public class Test {
         XWPFDocument doc = new XWPFDocument(new FileInputStream("C:\\Users\\longy\\Desktop\\MMC福建-同安-中医岗-马瑞鸿.docx"));
 
         XWPFDocument newDoc = new XWPFDocument();
-        newDoc.
         List<XWPFParagraph> paragraphs = doc.getParagraphs();
         int n = 0;
         for (int i = 0; i < paragraphs.size(); i++) {
             XWPFParagraph xwpfParagraph = paragraphs.get(i);
-            if (xwpfParagraph.getText().matches("[A-Z].*") ||
-                    xwpfParagraph.getText().matches("【[0-9A-Z]+】.*")) {
+            if (filterAnser(xwpfParagraph)) {
                 continue;
             }
             newDoc.createParagraph();
@@ -38,6 +36,15 @@ public class Test {
         out.close();
     }
 
+    public static boolean filterQuestion(XWPFParagraph xwpfParagraph){
+        return xwpfParagraph.getText().matches("[A-Z].*") ||
+                xwpfParagraph.getText().matches("【[0-9A-Z]+】.*")
+                ||xwpfParagraph.getText().matches("【知识点】.*");
+    }
+
+    public static boolean filterAnser(XWPFParagraph xwpfParagraph){
+        return xwpfParagraph.getText().matches("【(知识点|答案|解析)】.*") || xwpfParagraph.getText().matches("[0-9]+\\..*");
+    }
 
     public static final void test() throws Exception {
         XWPFDocument doc = new XWPFDocument();
