@@ -12,7 +12,7 @@ import java.io.IOException;
  **/
 public class Reader {
 
-    public XWPFDocument getDoc(String filePath) throws IOException {
+    public XWPFDocument readFromFile(String filePath) throws IOException {
         return new XWPFDocument(new FileInputStream(filePath));
     }
 
