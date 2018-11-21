@@ -19,6 +19,8 @@ public class ShulingMedicTem {
         String file = "/Users/dhy/Downloads/11.17长清中医 -王淑玲-试题版本 - dhy.docx";
         version(file, ANSER);
         version(file, QUESTION);
+        String a = "1.B";
+        System.out.println(a.matches("[0-9]+\\.(?!【)..*"));
     }
 
     public static void version(String filePath, String type) throws Exception {
@@ -44,7 +46,7 @@ public class ShulingMedicTem {
         return xwpfParagraph.getText().matches("[A-Z].*") ||
                 xwpfParagraph.getText().matches("【[0-9A-Z]+】.*")
                 || xwpfParagraph.getText().matches("【知识点】.*")
-                || xwpfParagraph.getText().matches("[0-9]+\\.[【]{0}.*");
+                || xwpfParagraph.getText().matches("[0-9]+\\.(?!【)..*");
     }
 
     public static boolean filterAnser(XWPFParagraph xwpfParagraph) {
