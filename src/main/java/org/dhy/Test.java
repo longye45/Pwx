@@ -16,10 +16,12 @@ public class Test {
     public static final String QUESTION = "QUESTION";
 
     public static void main(String[] args) throws Exception {
-        String file = "/Users/dhy/Downloads/20180910福建同安中医岗真题解析/MMC福建-同安-中医岗-马瑞鸿.docx";
+        String file = "/Users/dhy/Downloads/11.17长清中医 -王淑玲-试题版本 - dhy的.docx";
         version(file, ANSER);
         version(file, QUESTION);
 
+        String a = "60.痰饮的形成主要与哪些脏腑功能失常有关";
+        System.out.println(a.matches("[0-9]+\\..*"));
     }
 
     public static void version(String filePath, String type) throws Exception {
@@ -29,7 +31,6 @@ public class Test {
         int n = 0;
         for (int i = 0; i < paragraphs.size(); i++) {
             XWPFParagraph xwpfParagraph = paragraphs.get(i);
-            xwpfParagraph.setSpacingLineRule(LineSpacingRule.AUTO);
             xwpfParagraph.setSpacingBetween(1.5);
             if (type.equalsIgnoreCase(ANSER) ? filterAnser(xwpfParagraph) : filterQuestion(xwpfParagraph)) {
                 continue;
@@ -49,7 +50,7 @@ public class Test {
             for (int i = 0; i < size; i++) {
                 xwpfParagraph.removeRun(i);
             }
-            if (xwpfParagraph.getRuns().size()==0){
+            if (xwpfParagraph.getRuns().size() == 0) {
                 return;
             }
             xwpfParagraph.getRuns().get(0).setText(xwpfParagraph.getText().replaceAll("[,|.|\\(\\)|（）|，|。]", ""));
@@ -67,11 +68,12 @@ public class Test {
     public static boolean filterQuestion(XWPFParagraph xwpfParagraph) {
         return xwpfParagraph.getText().matches("[A-Z].*") ||
                 xwpfParagraph.getText().matches("【[0-9A-Z]+】.*")
-                || xwpfParagraph.getText().matches("【知识点】.*");
+                || xwpfParagraph.getText().matches("【知识点】.*")
+                || xwpfParagraph.getText().matches("[0-9]+\\.[【]{0}.*");
     }
 
     public static boolean filterAnser(XWPFParagraph xwpfParagraph) {
-        return xwpfParagraph.getText().matches("【(知识点|答案|解析)】.*") || xwpfParagraph.getText().matches("[0-9]+\\..*");
+        return xwpfParagraph.getText().matches("【(知识点|答案|解析)】.*")|| xwpfParagraph.getText().matches("[0-9]+\\.[【]{1}.*");
     }
 
     public static final void test() throws Exception {
