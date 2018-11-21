@@ -3,7 +3,6 @@ package org.dhy.Template;
 import org.apache.poi.xwpf.usermodel.*;
 import org.dhy.Components.Reader;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class ShulingMedicTem {
     public static final String QUESTION = "QUESTION";
 
     public static void main(String[] args) throws Exception {
-        String file = "/Users/dhy/Downloads/11.17长清中医 -王淑玲-试题版本 - dhy的.docx";
+        String file = "/Users/dhy/Downloads/11.17长清中医 -王淑玲-试题版本 - dhy.docx";
         version(file, ANSER);
         version(file, QUESTION);
     }
