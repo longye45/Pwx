@@ -1,6 +1,7 @@
 package org.dhy.Template;
 
 import org.apache.poi.xwpf.usermodel.*;
+import org.dhy.Components.Reader;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,7 +23,7 @@ public class ShulingMedicTem {
     }
 
     public static void version(String filePath, String type) throws Exception {
-        XWPFDocument doc = new XWPFDocument(new FileInputStream(filePath));
+        XWPFDocument doc = Reader.readFromFile(filePath);
         XWPFDocument newDoc = new XWPFDocument();
         List<XWPFParagraph> paragraphs = doc.getParagraphs();
         int n = 0;
