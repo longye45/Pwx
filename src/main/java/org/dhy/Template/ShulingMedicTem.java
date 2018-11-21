@@ -1,4 +1,4 @@
-package org.dhy;
+package org.dhy.Template;
 
 import org.apache.poi.xwpf.usermodel.*;
 
@@ -7,11 +7,11 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 /**
- * @ClassName: Test
+ * @ClassName: ShulingMedicTem
  * @Author: dhy
  * @Date: 2018/11/20 7:14 PM
  **/
-public class Test {
+public class ShulingMedicTem {
     public static final String ANSER = "ANSER";
     public static final String QUESTION = "QUESTION";
 
@@ -19,9 +19,6 @@ public class Test {
         String file = "/Users/dhy/Downloads/11.17长清中医 -王淑玲-试题版本 - dhy的.docx";
         version(file, ANSER);
         version(file, QUESTION);
-
-        String a = "60.痰饮的形成主要与哪些脏腑功能失常有关";
-        System.out.println(a.matches("[0-9]+\\..*"));
     }
 
     public static void version(String filePath, String type) throws Exception {
@@ -43,28 +40,6 @@ public class Test {
         out.close();
     }
 
-    public static void removeIllagleEndStr(XWPFParagraph xwpfParagraph) {
-        if (checkIllagle(xwpfParagraph.getText().replaceAll(" ", ""), ",", ".", "()", "（）", "，", "。")) {
-            int size = xwpfParagraph.getRuns().size();
-
-            for (int i = 0; i < size; i++) {
-                xwpfParagraph.removeRun(i);
-            }
-            if (xwpfParagraph.getRuns().size() == 0) {
-                return;
-            }
-            xwpfParagraph.getRuns().get(0).setText(xwpfParagraph.getText().replaceAll("[,|.|\\(\\)|（）|，|。]", ""));
-        }
-    }
-
-    public static boolean checkIllagle(String... str) {
-        boolean flag = false;
-        for (int i = 1; i < str.length; i++) {
-            flag = str[0].endsWith(str[i]);
-        }
-        return flag;
-    }
-
     public static boolean filterQuestion(XWPFParagraph xwpfParagraph) {
         return xwpfParagraph.getText().matches("[A-Z].*") ||
                 xwpfParagraph.getText().matches("【[0-9A-Z]+】.*")
@@ -73,7 +48,7 @@ public class Test {
     }
 
     public static boolean filterAnser(XWPFParagraph xwpfParagraph) {
-        return xwpfParagraph.getText().matches("【(知识点|答案|解析)】.*")|| xwpfParagraph.getText().matches("[0-9]+\\.[【]{1}.*");
+        return xwpfParagraph.getText().matches("【(知识点|答案|解析)】.*") || xwpfParagraph.getText().matches("[0-9]+\\.[【]{1}.*");
     }
 
     public static final void test() throws Exception {
@@ -95,7 +70,8 @@ public class Test {
         r.setText("POI读写Excel功能强大、操作简单。");
         r.setFontSize(12);
         XWPFTable table = doc.createTable(3, 3);
-        table.getRow(0).getCell(0).setText("表格1");
+        table.setTableAlignment(TableRowAlign.CENTER);
+        table.getRow(0).getCell(0).setWidthType(TableWidthType.AUTO);
         table.getRow(1).getCell(1).setText("表格2");
         table.getRow(2).getCell(2).setText("表格3");
         FileOutputStream out = new FileOutputStream(System.getProperty("user.dir") + "sample.docx");
