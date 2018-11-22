@@ -23,11 +23,16 @@ public class Test1 {
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
         ChromeDriver webDriver = new ChromeDriver(ChromeDriverService.createDefaultService(), options);
-        webDriver.get("https://wenku.baidu.com/view/4ebfce3d8e9951e79a892712.html?sxts=1542866432035");
+        webDriver.get("https://wenku.baidu.com/view/4847517a0640be1e650e52ea551810a6f524c8ef.html");
 
         Integer pagesNum = 3;
 
-        WebElement pagesContent = webDriver.findElementByXPath("//*[@id=\"html-reader-go-more\"]/div[2]/div[1]/span/span[1]");
+        WebElement pagesContent = null;
+        try {
+            pagesContent = webDriver.findElementByXPath("//*[@id=\"html-reader-go-more\"]/div[2]/div[1]/span/span[1]");
+        }catch (Exception e){
+
+        }
         if (pagesContent != null) {
             String text = pagesContent.getText();
             pagesNum += Integer.valueOf(text.replace("还剩", "").replace("页未读，", ""));
@@ -64,5 +69,6 @@ public class Test1 {
         }
 
         webDriver.close();
+        webDriver.quit();
     }
 }
