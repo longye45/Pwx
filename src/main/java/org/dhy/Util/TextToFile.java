@@ -16,7 +16,7 @@ public class TextToFile {
     public static void convert2Txt(String filePath, String content){
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath),true));
-            writer.write("\n"+content);
+            writer.write(content);
             writer.close();
         }catch(Exception e){
             e.printStackTrace();
