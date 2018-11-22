@@ -1,9 +1,13 @@
 package org.dhy.Template;
 
+import com.google.common.base.Strings;
+import org.dhy.Util.TextToFile;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.util.List;
+import java.io.File;
 
 /**
  * @author longy
@@ -14,29 +18,51 @@ import java.util.List;
  */
 public class Test1 {
     public static void main(String[] args) throws Exception {
-        System.setProperty("webdriver.chrome.driver", "E:\\软件备份\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/Users/dhy/Downloads/chromedriver");
         //初始化一个火狐浏览器实例，实例名称叫driver
-        ChromeDriver webDriver = new ChromeDriver();
-        webDriver.get("https://wenku.baidu.com/view/3eb27b7c561252d380eb6e77.html?from=search");
-        WebElement elementByXPath = null;
-        int siz = 500;
-        while (true){
-            try {
-                elementByXPath = webDriver.findElementByXPath("//*[@id=\"html-reader-go-more\"]/div[2]/div[1]/span/span[2]");
-                webDriver.executeScript("window.scrollTo(0," + siz + ")");
-                elementByXPath.click();
-                break;
-            } catch (Exception e) {
-                siz+=500;
+        ChromeOptions options = new ChromeOptions();
+        options.setHeadless(true);
+        ChromeDriver webDriver = new ChromeDriver(ChromeDriverService.createDefaultService(), options);
+        webDriver.get("https://wenku.baidu.com/view/4ebfce3d8e9951e79a892712.html?sxts=1542866432035");
+
+        Integer pagesNum = 3;
+
+        WebElement pagesContent = webDriver.findElementByXPath("//*[@id=\"html-reader-go-more\"]/div[2]/div[1]/span/span[1]");
+        if (pagesContent != null) {
+            String text = pagesContent.getText();
+            pagesNum += Integer.valueOf(text.replace("还剩", "").replace("页未读，", ""));
+        }
+
+        Integer currentScor = 0;
+
+        for (int i = 1; i <= pagesNum; i++) {
+            Thread.sleep(500);
+            WebElement elementById = webDriver.findElementById("pageNo-" + i);
+            if (Strings.isNullOrEmpty(elementById.getText())) {
+                i--;
+                webDriver.executeScript("scrollTo(0," + (currentScor += 100) + ")");
+                continue;
+            }
+            webDriver.executeScript("scrollTo(0," + (currentScor += 500) + ")");
+            System.out.println(elementById.getText().replaceAll("\n", ""));
+            TextToFile.convert2Txt(System.getProperty("user.home") + File.separator + "test.txt", elementById.getText().replaceAll("\n", ""));
+            if (i == 3) {
+                while (true) {
+                    try {
+                        webDriver.findElementByXPath("//*[@id=\"html-reader-go-more\"]/div[2]/div[1]/span/span[2]").click();
+                        break;
+                    } catch (Exception e) {
+                        webDriver.executeScript("scrollTo(0," + (currentScor += 100) + ")");
+                    }
+                }
+            }
+
+            if (i % 50 == 0) {
+                webDriver.get(webDriver.getCurrentUrl() + "&pn=" + (i + 1));
+                currentScor = 0;
             }
         }
-        Thread.sleep(10000);
-        List<WebElement> elementsByClassName = webDriver.findElementsByClassName("reader-word-layer");
-        for (int i = 0; i < elementsByClassName.size(); i++) {
-            WebElement webElement = elementsByClassName.get(i);
-            System.out.println(webElement.getText().replaceAll("\n", ""));
-        }
-        System.out.println(elementsByClassName.get(elementsByClassName.size()-1).toString());
+
         webDriver.close();
     }
 }
