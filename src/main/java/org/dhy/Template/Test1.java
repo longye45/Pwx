@@ -96,6 +96,6 @@ public class Test1 {
     }
 
     public static void main(String[] args) throws Exception {
-        convertBd2Txt("https://wenku.baidu.com/view/4309e57e27284b73f2425026.html", System.getProperty("user.home") + File.separator + "b.txt");
+        convertBd2Txt("https://wenku.baidu.com/view/ead1567d15791711cc7931b765ce05087732757e.html?from=search", System.getProperty("user.home") + File.separator + "python.txt");
     }
 }
