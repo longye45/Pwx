@@ -10,7 +10,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author longy
@@ -21,8 +22,16 @@ import java.util.Scanner;
  */
 public class BaiduWenku {
 
+    private static String findDriver() {
+        if (System.getProperty("os.name").toLowerCase().contains("windows")){
+            return System.getProperty("user.dir" + File.separator + "chromedriver.exe");
+        }else {
+            return System.getProperty("user.dir" + File.separator + "chromedriver");
+        }
+    }
+
     public static void convertBd2Txt(String url) {
-        System.setProperty("webdriver.chrome.driver", System.getProperty("user.home") + File.separator + "chromedriver");
+        System.setProperty("webdriver.chrome.driver", findDriver());
         //初始化一个火狐浏览器实例，实例名称叫driver
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
@@ -134,10 +143,18 @@ public class BaiduWenku {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("请输入百度文库链接：");
-        Scanner scanner = new Scanner(System.in);
-        String url = scanner.next();
-        System.out.println("请等待文件生成。。。");
-        convertBd2Txt(url);
+//        System.out.println(System.getProperty("user.dir"));
+//        System.out.println("请输入百度文库链接：");
+//        Scanner scanner = new Scanner(System.in);
+//        String url = scanner.next();
+//        System.out.println("请等待文件生成。。。");
+//        convertBd2Txt(url);
+
+        Properties properties = System.getProperties();
+        Set<Object> objects = properties.keySet();
+        for (Object obj : objects
+        ) {
+            System.out.println(obj + ":" + System.getProperty(obj.toString()));
+        }
     }
 }
