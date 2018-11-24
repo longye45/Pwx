@@ -10,18 +10,19 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * @author longy
- * @Title: Test1
+ * @Title: BaiduWenku
  * @ProjectName poiWord
  * @Description: TODO
  * @date 2018/11/21 21:42
  */
-public class Test1 {
+public class BaiduWenku {
 
     public static void convertBd2Txt(String url) {
-        System.setProperty("webdriver.chrome.driver", "/Users/dhy/Downloads/chromedriver");
+        System.setProperty("webdriver.chrome.driver", System.getProperty("user.home") + File.separator + "chromedriver");
         //初始化一个火狐浏览器实例，实例名称叫driver
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
@@ -34,8 +35,8 @@ public class Test1 {
             String title = null;
             try {
                 title = webDriver.findElementById("doc-tittle-2").getText();
-            }catch (Exception e){
-                title  = webDriver.findElementById("doc-tittle-0").getText();
+            } catch (Exception e) {
+                title = webDriver.findElementById("doc-tittle-0").getText();
             }
             String filePath = System.getProperty("user.home") + File.separator + title + ".txt";
             WebElement pagesContent = null;
@@ -117,6 +118,10 @@ public class Test1 {
     }
 
     public static void main(String[] args) throws Exception {
-        convertBd2Txt("https://wenku.baidu.com/view/51359f1dce2f0066f53322f9.html?from=search");
+        System.out.println("请输入百度文库链接：");
+        Scanner scanner = new Scanner(System.in);
+        String url = scanner.next();
+        System.out.println("请等待文件生成。。。");
+        convertBd2Txt(url);
     }
 }
