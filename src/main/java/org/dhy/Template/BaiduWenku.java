@@ -31,6 +31,18 @@ public class BaiduWenku {
             webDriver.get(url);
 
             Integer pagesNum = 3;
+            while (pagesNum > 0) {
+                try {
+                    try {
+                        webDriver.findElementById("pageNo-" + pagesNum);
+                    } catch (Exception e) {
+                        webDriver.findElementById("reader-pageNo-" + pagesNum);
+                    }
+                    break;
+                } catch (Exception e) {
+                    pagesNum--;
+                }
+            }
             Boolean isTxt = false;
             String title = null;
             try {
@@ -87,7 +99,6 @@ public class BaiduWenku {
             }
             System.out.println("文件生成路径为" + filePath);
         } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             webDriver.close();
             webDriver.quit();
