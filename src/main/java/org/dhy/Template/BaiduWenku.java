@@ -24,9 +24,9 @@ public class BaiduWenku {
     private static String findDriver() {
         System.out.println("当前系统为" + System.getProperty("os.name"));
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            return System.getProperty("user.dir" + File.separator + "chromedriver.exe");
+            return System.getProperty("user.dir") + File.separator + "chromedriver.exe";
         } else {
-            return System.getProperty("user.dir" + File.separator + "chromedriver");
+            return System.getProperty("user.dir") + File.separator + "chromedriver";
         }
     }
 
