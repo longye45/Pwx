@@ -51,6 +51,11 @@ public class BaiduWenku {
                 title = webDriver.findElementById("doc-tittle-0").getText();
             }
             String filePath = System.getProperty("user.home") + File.separator + title + ".txt";
+
+            if (new File(filePath).exists()) {
+                new File(filePath).delete();
+            }
+
             WebElement pagesContent = null;
             try {
                 pagesContent = webDriver.findElementByXPath("//*[@id=\"html-reader-go-more\"]/div[2]/div[1]/span/span[1]");
