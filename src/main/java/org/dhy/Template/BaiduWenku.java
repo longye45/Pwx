@@ -10,9 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
 import java.util.List;
-import java.util.Properties;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * @author longy
@@ -24,9 +22,10 @@ import java.util.Set;
 public class BaiduWenku {
 
     private static String findDriver() {
-        if (System.getProperty("os.name").toLowerCase().contains("windows")){
+        System.out.println("当前系统为" + System.getProperty("os.name"));
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             return System.getProperty("user.dir" + File.separator + "chromedriver.exe");
-        }else {
+        } else {
             return System.getProperty("user.dir" + File.separator + "chromedriver");
         }
     }
