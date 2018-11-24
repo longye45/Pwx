@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class Test1 {
 
-    public static void convertBd2Txt(String url, String filePath) {
+    public static void convertBd2Txt(String url) {
         System.setProperty("webdriver.chrome.driver", "/Users/dhy/Downloads/chromedriver");
         //初始化一个火狐浏览器实例，实例名称叫driver
         ChromeOptions options = new ChromeOptions();
@@ -30,7 +30,14 @@ public class Test1 {
             webDriver.get(url);
 
             Integer pagesNum = 3;
-
+            Boolean isTxt = false;
+            String title = null;
+            try {
+                title = webDriver.findElementById("doc-tittle-2").getText();
+            }catch (Exception e){
+                title  = webDriver.findElementById("doc-tittle-0").getText();
+            }
+            String filePath = System.getProperty("user.home") + File.separator + title + ".txt";
             WebElement pagesContent = null;
             try {
                 pagesContent = webDriver.findElementByXPath("//*[@id=\"html-reader-go-more\"]/div[2]/div[1]/span/span[1]");
@@ -45,16 +52,22 @@ public class Test1 {
             Integer currentScor = 0;
 
             for (int i = 1; i <= pagesNum; i++) {
-                Thread.sleep(500);
-                WebElement elementById = webDriver.findElementById("pageNo-" + i);
+                Thread.sleep(200);
+                WebElement elementById = null;
+                try {
+                    elementById = webDriver.findElementById("pageNo-" + i);
+                } catch (Exception e) {
+                    elementById = webDriver.findElementById("reader-pageNo-" + i);
+                    isTxt = true;
+                }
                 if (Strings.isNullOrEmpty(elementById.getText())) {
                     i--;
                     webDriver.executeScript("scrollTo(0," + (currentScor += 100) + ")");
                     continue;
                 }
+                System.out.println("共有" + pagesNum + "页，当前第" + i + "页面");
                 webDriver.executeScript("scrollTo(0," + (currentScor += 500) + ")");
-                System.out.println(elementById.getText().replaceAll("\n", ""));
-                dealWithParagraph(elementById, filePath);
+                dealWithParagraph(elementById, filePath, isTxt);
                 if (i == 3) {
                     while (true) {
                         try {
@@ -71,8 +84,9 @@ public class Test1 {
                     currentScor = 0;
                 }
             }
+            System.out.println("文件生成路径为" + filePath);
         } catch (Exception e) {
-
+            e.printStackTrace();
         } finally {
             webDriver.close();
             webDriver.quit();
@@ -80,8 +94,15 @@ public class Test1 {
 
     }
 
-    public static void dealWithParagraph(WebElement webPageElement, String filePath) {
+    public static void dealWithParagraph(WebElement webPageElement, String filePath, boolean isTxt) {
         Integer lastTop = 0;
+        if (isTxt) {
+            List<WebElement> elements = webPageElement.findElements(By.className("p-txt"));
+            for (int i = 0; i < elements.size(); i++) {
+                TextToFile.convert2Txt(filePath, "\n" + elements.get(i).getText());
+            }
+            return;
+        }
         List<WebElement> elements = webPageElement.findElements(By.className("reader-word-layer"));
         for (int i = 0; i < elements.size(); i++) {
             WebElement webElement = elements.get(i);
@@ -96,6 +117,6 @@ public class Test1 {
     }
 
     public static void main(String[] args) throws Exception {
-        convertBd2Txt("https://wenku.baidu.com/view/ead1567d15791711cc7931b765ce05087732757e.html?from=search", System.getProperty("user.home") + File.separator + "python.txt");
+        convertBd2Txt("https://wenku.baidu.com/view/51359f1dce2f0066f53322f9.html?from=search");
     }
 }
