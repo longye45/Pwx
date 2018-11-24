@@ -81,7 +81,7 @@ public class BaiduWenku {
                 System.out.println("共有" + pagesNum + "页，当前第" + i + "页面");
                 webDriver.executeScript("scrollTo(0," + (currentScor += 500) + ")");
                 dealWithParagraph(elementById, filePath, isTxt);
-                if (i == 3) {
+                if (i == 3 && pagesNum != 3) {
                     while (true) {
                         try {
                             webDriver.findElementByXPath("//*[@id=\"html-reader-go-more\"]/div[2]/div[1]/span/span[2]").click();
