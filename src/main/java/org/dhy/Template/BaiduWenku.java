@@ -143,11 +143,13 @@ public class BaiduWenku {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(System.getProperty("user.dir"));
-        System.out.println("请输入百度文库链接：");
-        Scanner scanner = new Scanner(System.in);
-        String url = scanner.next();
-        System.out.println("请等待文件生成。。。");
-        convertBd2Txt(url);
+        while (true){
+            System.out.println(System.getProperty("user.dir"));
+            System.out.println("请输入百度文库链接：");
+            Scanner scanner = new Scanner(System.in);
+            String url = scanner.next();
+            System.out.println("请等待文件生成。。。");
+            convertBd2Txt(url);
+        }
     }
 }
