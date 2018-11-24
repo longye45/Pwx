@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -143,18 +144,11 @@ public class BaiduWenku {
     }
 
     public static void main(String[] args) throws Exception {
-//        System.out.println(System.getProperty("user.dir"));
-//        System.out.println("请输入百度文库链接：");
-//        Scanner scanner = new Scanner(System.in);
-//        String url = scanner.next();
-//        System.out.println("请等待文件生成。。。");
-//        convertBd2Txt(url);
-
-        Properties properties = System.getProperties();
-        Set<Object> objects = properties.keySet();
-        for (Object obj : objects
-        ) {
-            System.out.println(obj + ":" + System.getProperty(obj.toString()));
-        }
+        System.out.println(System.getProperty("user.dir"));
+        System.out.println("请输入百度文库链接：");
+        Scanner scanner = new Scanner(System.in);
+        String url = scanner.next();
+        System.out.println("请等待文件生成。。。");
+        convertBd2Txt(url);
     }
 }
